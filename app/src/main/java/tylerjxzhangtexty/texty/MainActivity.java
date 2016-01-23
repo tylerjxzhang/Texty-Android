@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
     static public FloatingActionButton fab;
+    static public int sectionId;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
         fab = (FloatingActionButton)findViewById(R.id.fab);
+        sectionId = 0;
     }
 
 
@@ -154,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
 
-            int sectionId = getArguments().getInt(ARG_SECTION_NUMBER) - 1;
+            sectionId = getArguments().getInt(ARG_SECTION_NUMBER) - 1;
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
             final TextView textView = (TextView) rootView.findViewById(R.id.section_label);
@@ -168,15 +170,13 @@ public class MainActivity extends AppCompatActivity {
             editText.setHint(getHint(sectionId));
             editText2.setHint(getHint2(sectionId));
 
-
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(rootView.getContext(),
-                    getDropdownArray(sectionId), android.R.layout.simple_spinner_item);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    getDropdownArray(sectionId), android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
 
             ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(rootView.getContext(),
-                    getDropdownArray2(sectionId), android.R.layout.simple_spinner_item);
-            adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    getDropdownArray2(sectionId), android.R.layout.simple_spinner_dropdown_item);
+
             spinner2.setAdapter(adapter2);
 
 
@@ -193,6 +193,15 @@ public class MainActivity extends AppCompatActivity {
                         Snackbar.make(view, "Sending Request, Please Wait", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                     }else{
+                        if(editText.getText() == null){
+                            Log.d("Main"," editText null");
+                        }
+                        if(spinner.getSelectedItem() == null){
+                            Log.d("Main"," spinner 1 null");
+                        }
+                        if(spinner2.getSelectedItem() == null){
+                            Log.d("Main"," spinner 2 null");
+                        }
                         Snackbar.make(view, "Please Validate the Information", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                     }
@@ -200,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
+
 
             return rootView;
         }
@@ -299,10 +309,8 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
 
-
-
             //smsManager.sendTextMessage("999999999", null, msg, null, null);
-            Log.d("Main","Msg sent" + data[0] + data[1] + data[2]);
+            Log.d("Main","Msg sent" + sectionId +  data[0] + data[1] + data[2]);
 
         }
     }
