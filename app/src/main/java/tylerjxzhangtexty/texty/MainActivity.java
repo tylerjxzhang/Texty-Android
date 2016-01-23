@@ -1,5 +1,6 @@
 package tylerjxzhangtexty.texty;
 
+import android.content.Context;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,7 +18,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.ArrayAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -160,8 +165,110 @@ public class MainActivity extends AppCompatActivity {
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            textView.setText(getSectionTitle(getArguments().getInt(ARG_SECTION_NUMBER) - 1));
+            EditText editText = (EditText) rootView.findViewById(R.id.editText);
+            editText.setHint(getHint(getArguments().getInt(ARG_SECTION_NUMBER) - 1));
+            EditText editText2 = (EditText) rootView.findViewById(R.id.editText2);
+            editText2.setHint(getHint2(getArguments().getInt(ARG_SECTION_NUMBER) - 1));
+
+            Spinner spinner = (Spinner)rootView.findViewById(R.id.spinner);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(rootView.getContext(),
+                    getDropdownArray(getArguments().getInt(ARG_SECTION_NUMBER) - 1), android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
+            spinner.setOnItemSelectedListener(
+                    new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View rootView,
+                                                   int pos, long id) {
+                            parent.getItemAtPosition(pos);
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parents) {
+
+
+                        }
+                    }
+            );
+
+            Spinner spinner2 = (Spinner)rootView.findViewById(R.id.spinner2);
+            ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(rootView.getContext(),
+                    getDropdownArray2(getArguments().getInt(ARG_SECTION_NUMBER) - 1), android.R.layout.simple_spinner_item);
+            adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner2.setAdapter(adapter2);
+
             return rootView;
+        }
+
+        public int getDropdownArray(int n){
+            switch (n) {
+                case 0:
+                    return R.array.dropdown_array;
+                case 1:
+                    return R.array.dropdown1_array;
+                case 2:
+                    return R.array.dropdown2_array;
+                case 3:
+                    return R.array.dropdown3_array;
+            }
+            return -1;
+        }
+
+        public int getDropdownArray2(int n){
+            switch (n) {
+                case 0:
+                    return R.array.dropdown_array2;
+                case 1:
+                    return R.array.dropdown1_array2;
+                case 2:
+                    return R.array.dropdown2_array2;
+                case 3:
+                    return R.array.dropdown3_array2;
+            }
+            return -1;
+        }
+
+        public String getSectionTitle(int n){
+            switch (n) {
+                case 0:
+                    return "Language Translation";
+                case 1:
+                    return "Currency Conversion";
+                case 2:
+                    return "Current Weather";
+                case 3:
+                    return "Stock index";
+            }
+            return null;
+        }
+
+        public String getHint(int n){
+            switch (n) {
+                case 0:
+                    return "Enter Text";
+                case 1:
+                    return "Enter Currency";
+                case 2:
+                    return "Enter City";
+                case 3:
+                    return "Enter Stock Name";
+            }
+            return null;
+        }
+
+        public String getHint2(int n){
+            switch (n) {
+                case 0:
+                    return "Translation";
+                case 1:
+                    return "Converted";
+                case 2:
+                    return "Weather";
+                case 3:
+                    return "Stock index";
+            }
+            return null;
         }
     }
 }

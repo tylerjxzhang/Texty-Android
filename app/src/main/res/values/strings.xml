@@ -2,4 +2,64 @@
     <string name="app_name">Texty - Text to Search</string>
     <string name="action_settings">Config</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="translation">Language Translation</string>
+
+    <string-array name="dropdown_array">
+        <item>English</item>
+        <item>French</item>
+        <item>Spanish</item>
+        <item>Hindi</item>
+        <item>Arabic</item>
+        <item>Portuguese</item>
+        <item>Mandarin</item>
+        <item>Russian</item>
+    </string-array>
+
+    <string-array name="dropdown_array2">
+        <item>English</item>
+        <item>French</item>
+        <item>Spanish</item>
+        <item>Hindi</item>
+        <item>Arabic</item>
+        <item>Portuguese</item>
+        <item>Mandarin</item>
+        <item>Russian</item>
+    </string-array>
+
+    <string-array name="dropdown1_array">
+        <item>USD</item>
+        <item>CAD</item>
+        <item>CNY</item>
+        <item>CUP</item>
+        <item>EUR</item>
+        <item>JPY</item>
+        <item>RUB</item>
+        <item>CHF</item>
+    </string-array>
+
+    <string-array name="dropdown1_array2">
+        <item>USD</item>
+        <item>CAD</item>
+        <item>CNY</item>
+        <item>CUP</item>
+        <item>EUR</item>
+        <item>JPY</item>
+        <item>RUB</item>
+        <item>CHF</item>
+    </string-array>
+
+    <string-array name="dropdown2_array">
+    </string-array>
+
+    <string-array name="dropdown2_array2">
+        <item>Celsius</item>
+        <item>Fahrenheit</item>
+        <item>Kelvin</item>
+    </string-array>
+
+    <string-array name="dropdown3_array">
+    </string-array>
+
+    <string-array name="dropdown3_array2">
+    </string-array>
 </resources>
