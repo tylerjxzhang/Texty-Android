@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Texty - Text to Search</string>
+    <string name="action_settings">Config</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+</resources>
