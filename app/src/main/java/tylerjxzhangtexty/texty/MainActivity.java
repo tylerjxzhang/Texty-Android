@@ -28,7 +28,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ArrayAdapter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -41,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     static public FloatingActionButton fab;
     static public int sectionId;
+    static TextView textView;
+    static EditText editText;
+    static EditText editText2;
+    static Spinner spinner;
+    static Spinner spinner2;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -68,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
         sectionId = 0;
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -90,8 +94,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
 
 
     /**
@@ -149,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
             return fragment;
         }
 
+
         public PlaceholderFragment() {
         }
 
@@ -159,48 +162,55 @@ public class MainActivity extends AppCompatActivity {
             sectionId = getArguments().getInt(ARG_SECTION_NUMBER) - 1;
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-            final TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            final EditText editText = (EditText) rootView.findViewById(R.id.editText);
-            final EditText editText2 = (EditText) rootView.findViewById(R.id.editText2);
-            final Spinner spinner = (Spinner)rootView.findViewById(R.id.spinner);
-            final Spinner spinner2 = (Spinner)rootView.findViewById(R.id.spinner2);
-
+            textView = (TextView) rootView.findViewById(R.id.section_label);
+            editText = (EditText) rootView.findViewById(R.id.editText);
+            editText2 = (EditText) rootView.findViewById(R.id.editText2);
+            spinner = (Spinner)rootView.findViewById(R.id.spinner);
+            spinner2 = (Spinner)rootView.findViewById(R.id.spinner2);
 
             textView.setText(getSectionTitle(sectionId));
+            Log.d("main", "Title created: " + textView.getText());
             editText.setHint(getHint(sectionId));
             editText2.setHint(getHint2(sectionId));
 
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(rootView.getContext(),
                     getDropdownArray(sectionId), android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
+            Log.d("main", "spinner created: " + spinner.getSelectedItem());
+            spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
 
             ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(rootView.getContext(),
                     getDropdownArray2(sectionId), android.R.layout.simple_spinner_dropdown_item);
-
             spinner2.setAdapter(adapter2);
+            Log.d("main", "spinner2 created: " + spinner2.getSelectedItem());
+            spinner2.setOnItemSelectedListener(new CustomOnItemSelectedListener());
 
-
-            fab.setOnClickListener(new View.OnClickListener(){
+            fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int section = getArguments().getInt(ARG_SECTION_NUMBER) - 1;
+                        Log.d("main", "view: " + view.getId());
 
-                    if (editText.getText() != null && spinner.getSelectedItem() != null && spinner2.getSelectedItem() != null) {
-                        String[] stringData ={editText.getText().toString(),
-                            spinner.getSelectedItem().toString(),
-                            spinner2.getSelectedItem().toString()};
+                    EditText editTextT = (EditText)view.getRootView().findViewById(R.id.editText);
+                    Spinner spinnerT = (Spinner)view.getRootView().findViewById(R.id.spinner);
+                    Spinner spinner2T = (Spinner)view.getRootView().findViewById(R.id.spinner2);
+
+                    if (editTextT.getText() != null && spinnerT.getSelectedItem() != null && spinner2T.getSelectedItem() != null) {
+                        String[] stringData = {editTextT.getText().toString(),
+                                spinnerT.getSelectedItem().toString(),
+                                spinner2T.getSelectedItem().toString()};
                         sendSMS(section, stringData);
                         Snackbar.make(view, "Sending Request, Please Wait", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
-                    }else{
-                        if(editText.getText() == null){
-                            Log.d("Main"," editText null");
+                    } else {
+                        if (editTextT.getText() == null) {
+                            Log.d("Main", " editText null");
                         }
-                        if(spinner.getSelectedItem() == null){
-                            Log.d("Main"," spinner 1 null");
+                        if (spinnerT.getSelectedItem() == null) {
+                            Log.d("Main", " spinner 1 null");
                         }
-                        if(spinner2.getSelectedItem() == null){
-                            Log.d("Main"," spinner 2 null");
+                        if (spinner2T.getSelectedItem() == null) {
+                            Log.d("Main", " spinner 2 null");
                         }
                         Snackbar.make(view, "Please Validate the Information", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
@@ -212,11 +222,6 @@ public class MainActivity extends AppCompatActivity {
 
 
             return rootView;
-        }
-
-        private boolean isValid(int sectionId, String[] data){
-            //validation
-            return true;
         }
 
         public int getDropdownArray(int n){
@@ -294,23 +299,28 @@ public class MainActivity extends AppCompatActivity {
         {
             SmsManager smsManager = SmsManager.getDefault();
             String msg = "";
-            switch(sectionId){
+            switch(sectionId - 1){
                 case 0:
-                    msg += "@translate";
+                    msg += "@translate ";
+                    msg += "@"+ data[1] + " @" + data[2] + " @";
                     break;
                 case 1:
-                    msg += "@currency";
+                    msg += "@currency ";
+                    msg += "@"+ data[1] + " @" + data[2] + " @";
                     break;
                 case 2:
-                    msg += "@weather";
+                    msg += "@temperature ";
+                    msg += "@" + data[2] + " @";
                     break;
                 case 3:
-                    msg += "@stock";
+                    msg += "@stock @";
                     break;
             }
 
-            //smsManager.sendTextMessage("999999999", null, msg, null, null);
-            Log.d("Main","Msg sent" + sectionId +  data[0] + data[1] + data[2]);
+            msg += data[0];
+
+            //smsManager.sendTextMessage("a12672336296", null, msg, null, null);
+            Log.d("Main","Msg sent: " + msg);
 
         }
     }

@@ -16,7 +16,7 @@
     </string-array>
 
     <string-array name="dropdown_array2">
-        <item>English</item>
+        <item>English2</item>
         <item>French</item>
         <item>Spanish</item>
         <item>Hindi</item>
@@ -38,7 +38,7 @@
     </string-array>
 
     <string-array name="dropdown1_array2">
-        <item>USD</item>
+        <item>USD2</item>
         <item>CAD</item>
         <item>CNY</item>
         <item>CUP</item>
@@ -49,17 +49,20 @@
     </string-array>
 
     <string-array name="dropdown2_array">
+        <item>N/A</item>
     </string-array>
 
     <string-array name="dropdown2_array2">
-        <item>Celsius</item>
+        <item>Celsius2</item>
         <item>Fahrenheit</item>
         <item>Kelvin</item>
     </string-array>
 
     <string-array name="dropdown3_array">
+        <item>N/A</item>
     </string-array>
 
     <string-array name="dropdown3_array2">
+        <item>N/A2</item>
     </string-array>
 </resources>
