@@ -1,17 +1,21 @@
 package tylerjxzhangtexty.texty;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.content.Intent;
+import android.telephony.SmsManager;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
+    static public FloatingActionButton fab;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -59,15 +63,7 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-      FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-      fab.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-              Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                      .setAction("Action", null).show();
-          }
-      });
-
+        fab = (FloatingActionButton)findViewById(R.id.fab);
     }
 
 
@@ -105,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
+        private String[] titles = {"LANGUAGES", "CURRENCY", "WEATHER", "STOCK"};
 
         @Override
         public Fragment getItem(int position) {
@@ -115,21 +112,14 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 4 total pages.
-            return 4;
+            // Show total pages.
+            return titles.length;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "LANGUAGE";
-                case 1:
-                    return "CURRENCY";
-                case 2:
-                    return "WEATHER";
-                case 3:
-                    return "STOCK";
+            if(titles[position] != null){
+                return titles[position];
             }
             return null;
         }
@@ -163,42 +153,60 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getSectionTitle(getArguments().getInt(ARG_SECTION_NUMBER) - 1));
-            EditText editText = (EditText) rootView.findViewById(R.id.editText);
-            editText.setHint(getHint(getArguments().getInt(ARG_SECTION_NUMBER) - 1));
-            EditText editText2 = (EditText) rootView.findViewById(R.id.editText2);
-            editText2.setHint(getHint2(getArguments().getInt(ARG_SECTION_NUMBER) - 1));
 
-            Spinner spinner = (Spinner)rootView.findViewById(R.id.spinner);
+            final int sectionId = getArguments().getInt(ARG_SECTION_NUMBER) - 1;
+            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+            final TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            final EditText editText = (EditText) rootView.findViewById(R.id.editText);
+            final EditText editText2 = (EditText) rootView.findViewById(R.id.editText2);
+            final Spinner spinner = (Spinner)rootView.findViewById(R.id.spinner);
+            final Spinner spinner2 = (Spinner)rootView.findViewById(R.id.spinner2);
+
+
+            textView.setText(getSectionTitle(sectionId));
+            editText.setHint(getHint(sectionId));
+            editText2.setHint(getHint2(sectionId));
+
+
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(rootView.getContext(),
-                    getDropdownArray(getArguments().getInt(ARG_SECTION_NUMBER) - 1), android.R.layout.simple_spinner_item);
+                    getDropdownArray(sectionId), android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
-            spinner.setOnItemSelectedListener(
-                    new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View rootView,
-                                                   int pos, long id) {
-                            parent.getItemAtPosition(pos);
-                        }
 
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parents) {
-
-
-                        }
-                    }
-            );
-
-            Spinner spinner2 = (Spinner)rootView.findViewById(R.id.spinner2);
             ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(rootView.getContext(),
-                    getDropdownArray2(getArguments().getInt(ARG_SECTION_NUMBER) - 1), android.R.layout.simple_spinner_item);
+                    getDropdownArray2(sectionId), android.R.layout.simple_spinner_item);
             adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner2.setAdapter(adapter2);
 
+
+            fab.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    int section = sectionId;
+
+                    if (editText.getText() != null && spinner.getSelectedItem() != null && spinner2.getSelectedItem() != null) {
+                        String[] stringData ={editText.getText().toString(), editText2.getText().toString(),
+                            spinner.getSelectedItem().toString(),
+                            spinner2.getSelectedItem().toString()};
+                        sendSMS(section, stringData);
+                        Snackbar.make(view, "Sending Request, Please Wait", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }else{
+                        Snackbar.make(view, "Please Validate the Information", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
+
+
+                }
+            });
+
             return rootView;
+        }
+
+        private boolean isValid(int sectionId, String[] data){
+            //validation
+            return true;
         }
 
         public int getDropdownArray(int n){
@@ -269,6 +277,33 @@ public class MainActivity extends AppCompatActivity {
                     return "Stock index";
             }
             return null;
+        }
+
+        //---sends an SMS message to another device---
+        private void sendSMS(int sectionId, String[] data)
+        {
+            SmsManager smsManager = SmsManager.getDefault();
+            String msg = "";
+            switch(sectionId){
+                case 0:
+                    msg += "@translate";
+                    break;
+                case 1:
+                    msg += "@currency";
+                    break;
+                case 2:
+                    msg += "@weather";
+                    break;
+                case 3:
+                    msg += "@stock";
+                    break;
+            }
+
+
+
+            //smsManager.sendTextMessage("999999999", null, msg, null, null);
+            Log.d("Main","Msg sent" + data[0] + data[1] + data[2] + data[3]);
+
         }
     }
 }
