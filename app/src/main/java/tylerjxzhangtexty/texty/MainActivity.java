@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
-        private String[] titles = {"LANGUAGES", "CURRENCY", "WEATHER", "STOCK"};
+        private String[] titles = {"LANGUAGE", "CURRENCY", "WEATHER", "STOCK"};
 
         @Override
         public Fragment getItem(int position) {
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
 
-            final int sectionId = getArguments().getInt(ARG_SECTION_NUMBER) - 1;
+            int sectionId = getArguments().getInt(ARG_SECTION_NUMBER) - 1;
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
             final TextView textView = (TextView) rootView.findViewById(R.id.section_label);
@@ -183,10 +183,10 @@ public class MainActivity extends AppCompatActivity {
             fab.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
-                    int section = sectionId;
+                    int section = getArguments().getInt(ARG_SECTION_NUMBER) - 1;
 
                     if (editText.getText() != null && spinner.getSelectedItem() != null && spinner2.getSelectedItem() != null) {
-                        String[] stringData ={editText.getText().toString(), editText2.getText().toString(),
+                        String[] stringData ={editText.getText().toString(),
                             spinner.getSelectedItem().toString(),
                             spinner2.getSelectedItem().toString()};
                         sendSMS(section, stringData);
@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             //smsManager.sendTextMessage("999999999", null, msg, null, null);
-            Log.d("Main","Msg sent" + data[0] + data[1] + data[2] + data[3]);
+            Log.d("Main","Msg sent" + data[0] + data[1] + data[2]);
 
         }
     }
