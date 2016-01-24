@@ -21,12 +21,17 @@ import android.widget.TextView;
 public class FabClickListener implements View.OnClickListener {
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    private View rootView;
-    private Fragment fragment;
+    public View rootView;
+    public Fragment fragment;
 
     public FabClickListener(View rootView, Fragment fragment) {
         this.rootView = rootView;
         this.fragment = fragment;
+    }
+
+    public void updateText(String s){
+        EditText t2 = (EditText)rootView.findViewById(R.id.editText2);
+        t2.setText(s, TextView.BufferType.EDITABLE);
     }
 
     //---sends an SMS message to another device---

@@ -35,12 +35,10 @@ public class SmsListener extends BroadcastReceiver{
                         if(msg_from.contains("2672336296")){
                             String msgBody = msgs[i].getMessageBody();
                             Log.i("main", msgBody);
-                            EditText edit2 = (EditText)((Activity)context).findViewById(R.id.editText2);
-                            if(edit2 == null){
-                                Log.i("error", "error");
-                            }else {
-                                edit2.setText(msgBody);
-                            }
+                            Intent intent2 = new Intent();
+                            intent2.putExtra("Value",msgBody);
+                            intent2.setAction("co.ir.ts.app.sms.smsumad");
+                            context.sendBroadcast(intent2);
                         }
 
                     }

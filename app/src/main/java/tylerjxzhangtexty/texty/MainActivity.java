@@ -1,7 +1,9 @@
 package tylerjxzhangtexty.texty;
 
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,6 +17,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -52,6 +55,9 @@ public class MainActivity extends AppCompatActivity{
     static Spinner spinner;
     static Spinner spinner2;
     static SmsListener sms;
+    static View rootV;
+    boolean firstThree = true;
+    boolean bugFix = true;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -116,8 +122,35 @@ public class MainActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //Log.i("main","got intent");
+            if(intent.getStringExtra("Value") != null){
+                Log.i("main", "sectionId: " + sectionId);
+                int id = sectionId;
+                if(id == 3 && !firstThree && bugFix){
+                    id = 4;
+                    bugFix = false;
+                }else if(id == 3 && firstThree && bugFix){
+                    firstThree = false;
+                }
+                fabClickListeners[id - 1].updateText(intent.getStringExtra("Value"));
+            }
+        }
 
-    /**
+    };
+
+    @Override
+    protected void onResume() {
+        // TODO Auto-generated method stub
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("co.ir.ts.app.sms.smsumad");
+        registerReceiver(receiver, filter);
+        super.onResume();
+    }
+
+        /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
@@ -182,7 +215,7 @@ public class MainActivity extends AppCompatActivity{
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
 
-            sectionId = getArguments().getInt(ARG_SECTION_NUMBER)-1;
+            sectionId = getArguments().getInt(ARG_SECTION_NUMBER) - 1;
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
             textView = (TextView) rootView.findViewById(R.id.section_label);
@@ -196,10 +229,17 @@ public class MainActivity extends AppCompatActivity{
             editText.setHint(getHint(sectionId));
             editText2.setHint(getHint2(sectionId));
 
+            if(sectionId == 1){
+                editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+            }
+
             ImageView img = (ImageView) rootView.findViewById(R.id.imageView);
             if(sectionId == 2 || sectionId == 3){
                 img.setRotation(90);
             }
+
+
 
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(rootView.getContext(),
                     getDropdownArray(sectionId), android.R.layout.simple_spinner_dropdown_item);
@@ -222,6 +262,7 @@ public class MainActivity extends AppCompatActivity{
             MainActivity owner = (MainActivity) this.getActivity();
             owner.fabClickListeners[sectionId] = new FabClickListener(rootView, this);
 
+            rootV = rootView;
             return rootView;
         }
 

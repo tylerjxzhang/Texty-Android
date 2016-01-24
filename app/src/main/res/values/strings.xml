@@ -8,13 +8,7 @@
         <item>French</item>
         <item>Spanish</item>
         <item>German</item>
-        <item>Hindi</item>
-        <item>Arabic</item>
         <item>Portuguese</item>
-        <item>Mandarin</item>
-        <item>Russian</item>
-        <item>Japanese</item>
-        <item>Hacker</item>
     </string-array>
 
     <string-array name="dropdown_array2">
@@ -22,35 +16,23 @@
         <item>French</item>
         <item>Spanish</item>
         <item>German</item>
-        <item>Hindi</item>
-        <item>Arabic</item>
         <item>Portuguese</item>
-        <item>Mandarin</item>
-        <item>Russian</item>
-        <item>Japanese</item>
-        <item>Hacker</item>
     </string-array>
 
     <string-array name="dropdown1_array">
         <item>USD</item>
         <item>CAD</item>
         <item>CNY</item>
-        <item>CUP</item>
         <item>EUR</item>
         <item>JPY</item>
-        <item>RUB</item>
-        <item>CHF</item>
     </string-array>
 
     <string-array name="dropdown1_array2">
         <item>USD</item>
         <item>CAD</item>
         <item>CNY</item>
-        <item>CUP</item>
         <item>EUR</item>
         <item>JPY</item>
-        <item>RUB</item>
-        <item>CHF</item>
     </string-array>
 
     <string-array name="dropdown2_array">
@@ -58,9 +40,7 @@
     </string-array>
 
     <string-array name="dropdown2_array2">
-        <item>Celsius2</item>
-        <item>Fahrenheit</item>
-        <item>Kelvin</item>
+        <item>Celsius</item>
     </string-array>
 
     <string-array name="dropdown3_array">
