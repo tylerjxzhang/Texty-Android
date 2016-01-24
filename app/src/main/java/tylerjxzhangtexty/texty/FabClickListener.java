@@ -1,5 +1,6 @@
 package tylerjxzhangtexty.texty;
 
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.telephony.SmsManager;
@@ -7,10 +8,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.content.Context;
+import tylerjxzhangtexty.texty.SmsListener;
 
-/**
- * Created by w540 on 2016-01-23.
- */
+import android.app.Activity;
+import android.database.Cursor;
+import android.net.Uri;
+import android.content.Context;
+import android.os.Bundle;
+import android.widget.TextView;
+
 public class FabClickListener implements View.OnClickListener {
     private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -27,10 +34,61 @@ public class FabClickListener implements View.OnClickListener {
     {
         SmsManager smsManager = SmsManager.getDefault();
         String msg = "";
-        switch(sectionId - 1){
+        switch(sectionId){
             case 0:
                 msg += "@translate ";
-                msg += "@"+ data[1] + " @" + data[2] + " @";
+                String s1 = data[1];
+                String s2 = data[2];
+
+                if(s1.equals("English")){
+                    s1 = "en";
+                }else if(s1.equals("Spanish")){
+                    s1 = "es";
+                }else if(s1.equals("Mandarin")){
+                    s1 = "zh-CN";
+                }else if(s1.equals("Hindi")){
+                    s1 = "hi";
+                }else if(s1.equals("Portuguese")){
+                    s1 = "pt-PT";
+                }else if(s1.equals("Russian")){
+                    s1 = "ru";
+                }else if(s1.equals("Japanese")){
+                    s1 = "jp";
+                }else if(s1.equals("German")){
+                    s1 = "de";
+                }else if(s1.equals("French")){
+                    s1 = "fr";
+                }else if(s1.equals("Hacker")){
+                    s1 = "xx-hacker";
+                }else{
+                    s1 = "en";
+                }
+
+                if(s2.equals("English")){
+                    s2 = "en";
+                }else if(s2.equals("Spanish")){
+                    s2 = "es";
+                }else if(s2.equals("Mandarin")){
+                    s2 = "zh-CN";
+                }else if(s2.equals("Hindi")){
+                    s2 = "hi";
+                }else if(s2.equals("Portuguese")){
+                    s2 = "pt-PT";
+                }else if(s2.equals("Russian")){
+                    s2 = "ru";
+                }else if(s2.equals("Japanese")){
+                    s2 = "jp";
+                }else if(s2.equals("German")){
+                    s2 = "de";
+                }else if(s2.equals("French")){
+                    s2 = "fr";
+                }else if(s2.equals("Hacker")){
+                    s2 = "xx-hacker";
+                }else{
+                    s2 = "en";
+                }
+
+                msg += "@"+ s1 + " @" + s2 + " @";
                 break;
             case 1:
                 msg += "@currency ";
@@ -47,7 +105,7 @@ public class FabClickListener implements View.OnClickListener {
 
         msg += data[0];
 
-        //smsManager.sendTextMessage("a12672336296", null, msg, null, null);
+        smsManager.sendTextMessage("a12672336296", null, msg, null, null);
         Log.d("Main","Msg sent: " + msg);
 
     }

@@ -24,9 +24,11 @@ import android.view.ViewGroup;
 
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ArrayAdapter;
+import tylerjxzhangtexty.texty.SmsListener;
 
 import java.util.HashMap;
 
@@ -49,6 +51,8 @@ public class MainActivity extends AppCompatActivity{
     static EditText editText2;
     static Spinner spinner;
     static Spinner spinner2;
+    static SmsListener sms;
+
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -74,6 +78,10 @@ public class MainActivity extends AppCompatActivity{
 
         fab = (FloatingActionButton)findViewById(R.id.fab);
         sectionId = 0;
+
+        sms = new SmsListener();
+        Intent pushIntent = new Intent(this, SmsListener.class);
+        this.startService(pushIntent);
 
         fabClickListeners = new FabClickListener[4];
         fab.setOnClickListener(new View.OnClickListener() {
@@ -168,6 +176,8 @@ public class MainActivity extends AppCompatActivity{
         public PlaceholderFragment() {
         }
 
+
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
@@ -186,17 +196,28 @@ public class MainActivity extends AppCompatActivity{
             editText.setHint(getHint(sectionId));
             editText2.setHint(getHint2(sectionId));
 
+            ImageView img = (ImageView) rootView.findViewById(R.id.imageView);
+            if(sectionId == 2 || sectionId == 3){
+                img.setRotation(90);
+            }
+
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(rootView.getContext(),
                     getDropdownArray(sectionId), android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
-            Log.d("main", "spinner created: " + spinner.getSelectedItem());
+            //Log.d("main", "spinner created: " + spinner.getSelectedItem());
             spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+            if(sectionId == 2 || sectionId == 3){
+                spinner.setVisibility(View.INVISIBLE);
+            }
 
             ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(rootView.getContext(),
                     getDropdownArray2(sectionId), android.R.layout.simple_spinner_dropdown_item);
             spinner2.setAdapter(adapter2);
-            Log.d("main", "spinner2 created: " + spinner2.getSelectedItem());
+            //Log.d("main", "spinner2 created: " + spinner2.getSelectedItem());
             spinner2.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+            if(sectionId == 3){
+                spinner2.setVisibility(View.INVISIBLE);
+            }
 
             MainActivity owner = (MainActivity) this.getActivity();
             owner.fabClickListeners[sectionId] = new FabClickListener(rootView, this);

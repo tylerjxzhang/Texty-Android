@@ -63,8 +63,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/editText2"
         android:backgroundTint="#4285F4"
-        android:editable="false"
-        android:enabled="false"
         android:layout_below="@+id/spinner2"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="47dp" />

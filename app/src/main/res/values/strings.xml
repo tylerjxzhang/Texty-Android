@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TXTY</string>
+    <string name="app_name">Texty</string>
     <string name="action_settings">Config</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
@@ -7,22 +7,28 @@
         <item>English</item>
         <item>French</item>
         <item>Spanish</item>
+        <item>German</item>
         <item>Hindi</item>
         <item>Arabic</item>
         <item>Portuguese</item>
         <item>Mandarin</item>
         <item>Russian</item>
+        <item>Japanese</item>
+        <item>Hacker</item>
     </string-array>
 
     <string-array name="dropdown_array2">
         <item>English</item>
         <item>French</item>
         <item>Spanish</item>
+        <item>German</item>
         <item>Hindi</item>
         <item>Arabic</item>
         <item>Portuguese</item>
         <item>Mandarin</item>
         <item>Russian</item>
+        <item>Japanese</item>
+        <item>Hacker</item>
     </string-array>
 
     <string-array name="dropdown1_array">
@@ -64,4 +70,5 @@
     <string-array name="dropdown3_array2">
         <item>N/A</item>
     </string-array>
+    <string name="twilio_number">"a12672336296"</string>
 </resources>
