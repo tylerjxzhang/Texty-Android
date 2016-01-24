@@ -28,6 +28,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ArrayAdapter;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity{
 
     /**
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity{
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    private FabClickListener[] fabClickListeners;
     static public FloatingActionButton fab;
     static public int sectionId;
     static TextView textView;
@@ -71,6 +74,16 @@ public class MainActivity extends AppCompatActivity{
 
         fab = (FloatingActionButton)findViewById(R.id.fab);
         sectionId = 0;
+
+        fabClickListeners = new FabClickListener[4];
+        fab.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                int currentItem = mViewPager.getCurrentItem();
+                fabClickListeners[currentItem].onClick(null);
+            }
+        });
     }
 
     @Override
@@ -111,7 +124,7 @@ public class MainActivity extends AppCompatActivity{
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return PlaceholderFragment.newInstance(position+1);
         }
 
         @Override
@@ -159,7 +172,7 @@ public class MainActivity extends AppCompatActivity{
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
 
-            sectionId = getArguments().getInt(ARG_SECTION_NUMBER) - 1;
+            sectionId = getArguments().getInt(ARG_SECTION_NUMBER)-1;
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
             textView = (TextView) rootView.findViewById(R.id.section_label);
@@ -185,41 +198,8 @@ public class MainActivity extends AppCompatActivity{
             Log.d("main", "spinner2 created: " + spinner2.getSelectedItem());
             spinner2.setOnItemSelectedListener(new CustomOnItemSelectedListener());
 
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int section = getArguments().getInt(ARG_SECTION_NUMBER) - 1;
-                        Log.d("main", "view: " + view.getId());
-
-                    EditText editTextT = (EditText)view.getRootView().findViewById(R.id.editText);
-                    Spinner spinnerT = (Spinner)view.getRootView().findViewById(R.id.spinner);
-                    Spinner spinner2T = (Spinner)view.getRootView().findViewById(R.id.spinner2);
-
-                    if (editTextT.getText() != null && spinnerT.getSelectedItem() != null && spinner2T.getSelectedItem() != null) {
-                        String[] stringData = {editTextT.getText().toString(),
-                                spinnerT.getSelectedItem().toString(),
-                                spinner2T.getSelectedItem().toString()};
-                        sendSMS(section, stringData);
-                        Snackbar.make(view, "Sending Request, Please Wait", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
-                    } else {
-                        if (editTextT.getText() == null) {
-                            Log.d("Main", " editText null");
-                        }
-                        if (spinnerT.getSelectedItem() == null) {
-                            Log.d("Main", " spinner 1 null");
-                        }
-                        if (spinner2T.getSelectedItem() == null) {
-                            Log.d("Main", " spinner 2 null");
-                        }
-                        Snackbar.make(view, "Please Validate the Information", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
-                    }
-
-
-                }
-            });
-
+            MainActivity owner = (MainActivity) this.getActivity();
+            owner.fabClickListeners[sectionId] = new FabClickListener(rootView, this);
 
             return rootView;
         }
@@ -259,9 +239,9 @@ public class MainActivity extends AppCompatActivity{
                 case 1:
                     return "Currency Conversion";
                 case 2:
-                    return "Current Weather";
+                    return "Weather Forecast";
                 case 3:
-                    return "Stock index";
+                    return "Stock Lookup";
             }
             return null;
         }
@@ -271,11 +251,11 @@ public class MainActivity extends AppCompatActivity{
                 case 0:
                     return "Enter Text";
                 case 1:
-                    return "Enter Currency";
+                    return "Enter Currency Amount";
                 case 2:
-                    return "Enter City";
+                    return "Enter City, State";
                 case 3:
-                    return "Enter Stock Name";
+                    return "Enter Stock Code";
             }
             return null;
         }

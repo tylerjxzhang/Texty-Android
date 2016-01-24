@@ -13,38 +13,41 @@
         android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="false"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentRight="false"
-        android:layout_centerHorizontal="true"
         android:textStyle="bold"
         android:textColor="@android:color/black"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
 
     <Spinner
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/spinner2"
-        android:layout_below="@+id/editText"
-        android:layout_toEndOf="@+id/imageView" />
+        android:radius="3dp"
+        android:layout_alignTop="@+id/imageView"
+        android:layout_toEndOf="@+id/imageView"
+        android:backgroundTint="#4285F4" />
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editText"
-        android:backgroundTint="#00bee4"
+        android:backgroundTint="#4285F4"
+        android:layout_marginTop="44dp"
         android:layout_below="@+id/section_label"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="21dp" />
+        android:autoText="false" />
 
     <Spinner
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/spinner"
+        android:radius="3dp"
         android:layout_alignTop="@+id/imageView"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/imageView" />
+        android:layout_toStartOf="@+id/imageView"
+        android:backgroundTint="#4285F4" />
 
     <ImageView
         android:layout_width="50dp"
@@ -52,18 +55,19 @@
         android:id="@+id/imageView"
         android:src="@drawable/arrow"
         android:layout_below="@+id/editText"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="53dp" />
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editText2"
-        android:backgroundTint="#00bee4"
-        android:layout_marginTop="25dp"
-        android:layout_below="@+id/spinner2"
-        android:layout_alignParentStart="true"
+        android:backgroundTint="#4285F4"
         android:editable="false"
-        android:enabled="false" />
+        android:enabled="false"
+        android:layout_below="@+id/spinner2"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="47dp" />
 
 
 </RelativeLayout>
